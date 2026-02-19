@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const reversedQuestions = [1, 3, 5, 6, 10, 11, 12, 13, 14, 15];
         const reverseValue = value => 8 - value; // Reversering: 1=7, 2=6, 3=5, 4=4, 5=3, 6=2, 7=1
 
-        // Kategoriene fra MSCS-O
+        // Kategoriene fra MSCS-O i eksakt rekkefølge
         const categories = {
             "Fravær av prokrastinering": [1, 2, 3, 4, 5],
             "Oppmerksomhetskontroll": [6, 7, 8, 9, 10],
@@ -46,24 +46,31 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         resultsContainer.appendChild(ul);
 
-        // Definere farger for grafen
-        const backgroundColors = Object.keys(categoryAverages).map(category => {
-            if (category === 'Inhibering (Brems)' || category === 'Initiering (gass)') {
-                return 'rgba(54, 162, 235, 0.6)'; // Mørkeblå for hovedfaktorene
-            } else if (category === 'Generell selvkontroll') {
-                return 'rgba(54, 162, 235, 0.8)'; // Enda mørkere blå for totalkarakteren
+        // Hent ut rekkefølgen på kategoriene
+        const categoriesList = Object.keys(categoryAverages);
+
+        // Definere farger for grafen basert på gruppering (3 + 3 + 2 + 1)
+        const backgroundColors = categoriesList.map((category, index) => {
+            if (index < 3) {
+                return 'rgba(255, 99, 132, 0.6)'; // De 3 første (Rødlig)
+            } else if (index < 6) {
+                return 'rgba(75, 192, 192, 0.6)'; // De 3 neste (Grønnlig)
+            } else if (index < 8) {
+                return 'rgba(54, 162, 235, 0.6)'; // De 2 neste (Mørkeblå)
             } else {
-                return 'rgba(75, 192, 192, 0.2)'; // Standardfarge for underkategoriene
+                return 'rgba(153, 102, 255, 0.8)'; // Den siste (Lilla/helt annen farge)
             }
         });
 
-        const borderColors = Object.keys(categoryAverages).map(category => {
-            if (category === 'Inhibering (Brems)' || category === 'Initiering (gass)') {
-                return 'rgba(54, 162, 235, 1)'; // Mørkeblå kant
-            } else if (category === 'Generell selvkontroll') {
-                return 'rgba(54, 162, 235, 1)'; // Enda mørkere blå kant
+        const borderColors = categoriesList.map((category, index) => {
+            if (index < 3) {
+                return 'rgba(255, 99, 132, 1)'; 
+            } else if (index < 6) {
+                return 'rgba(75, 192, 192, 1)'; 
+            } else if (index < 8) {
+                return 'rgba(54, 162, 235, 1)'; 
             } else {
-                return 'rgba(75, 192, 192, 1)'; // Standard kantfarge
+                return 'rgba(153, 102, 255, 1)'; 
             }
         });
 
@@ -71,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         new Chart(resultsChart, {
             type: 'bar',
             data: {
-                labels: Object.keys(categoryAverages),
+                labels: categoriesList,
                 datasets: [{
                     label: 'Gjennomsnittlig skår',
                     data: Object.values(categoryAverages),
