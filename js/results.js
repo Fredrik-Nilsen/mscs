@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "Målorientering": [20, 21, 22, 23],
             "Selvkontroll strategier": [24, 25, 26, 27, 28, 29],
             "Inhibering (Brems)": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-            "Initiering (gass)": [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+            "Initiering (Gass)": [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
             "Generell selvkontroll": Array.from({ length: 29 }, (_, i) => i + 1),
         };
 
