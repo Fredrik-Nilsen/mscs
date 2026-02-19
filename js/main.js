@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     const questions = [
-        "Jeg utsetter ting",
+        "Jeg utsetter ting2",
         "Hvis det er noe jeg bør gjøre, gjør jeg det før jeg gjør andre og mindre viktige ting",
         "Jeg utsetter ting så lenge at det går ut over velvære og effektivitet",
         "Jeg bruker tiden min fornuftig",
