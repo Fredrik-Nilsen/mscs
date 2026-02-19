@@ -85,6 +85,41 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
+
+        // ==========================================
+        // NY KODE: Send data til Google Sheets Dashboard
+        // ==========================================
+        
+        // Sjekk at vi ikke allerede har sendt denne dataen (hindrer dobbeltsending hvis de oppdaterer siden)
+        if (!sessionStorage.getItem('dataSendt')) {
+            
+            // Samle alle data i en pakke
+            const uttrekk = {
+                DatoTid: new Date().toISOString(),
+                ...results, // Tar med q1 til q29
+                ...categoryAverages // Tar med de utregnede gjennomsnittene
+            };
+
+            // BYTT UT DENNE URLEN MED DIN GOOGLE APPS SCRIPT URL I STEG 3
+            const googleAppScriptURL = "https://script.google.com/macros/s/AKfycbxAhzMzJ5Ej5NfBohu2nC5SQdYOdM0d0ZQIfv5NgoogAhPRdVCBQZxcu34GqtwJHLaYeQ/exec"; 
+
+            fetch(googleAppScriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // Viktig for statiske nettsider
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(uttrekk)
+            })
+            .then(() => {
+                console.log("Samband opprettet: Resultater sendt til dashboard!");
+                sessionStorage.setItem('dataSendt', 'true'); // Markerer som sendt
+            })
+            .catch((error) => {
+                console.error("Sambandsbrudd ved sending av data:", error);
+            });
+        }
+
     } else {
         resultsContainer.textContent = 'No results found.';
     }
