@@ -23,14 +23,15 @@ document.addEventListener("DOMContentLoaded", function() {
         "Hvis jeg blir provosert eller sint under oppdragsløsning, klarer jeg raskt å parkere følelsen og re-fokusere på oppdraget",
         "Når jeg får et oppdrag, utarbeider jeg konkrete og systematiske planer for hvordan det skal løses",
         "I ledelse av meg selv, vet jeg nøyaktig hva som må gjøres, når og hvordan",
-        "Jeg klarer å holde blikket på den overordnede sjefens intensjon (det langsiktige målet), selv når jeg står midt i kaoset og detaljene",
-        "Jeg har en tydelig, daglig forståelse av hvilke personlige og faglige krav som stilles til meg for å bli en god offiser",
-        "Når situasjonen er uoversiktlig og jeg mangler ordrer, tar jeg initiativ for i det minste å få i gang en prosess",
+        "Jeg klarer å holde blikket på sjefens intensjon og det langsiktige målet, selv når jeg står midt i kaoset og detaljene",
+        "Jeg har en tydelig forståelse som jeg reflekterer over nærmest daglig, av hvilke personlige og faglige krav som stilles til meg for å bli en god offiser",
+        "Når situasjonen er uoversiktlig og retning mangler, er det som regel jeg som tar initiativ for i det minste å få i gang en prosess",
         "Når en plan feiler, evner jeg raskt å tenke nytt og angripe problemet fra en helt annen vinkel",
-        "I risikofylte eller skremmende situasjoner bruker jeg mentale teknikker for å kontrollere frykten og gjennomføre",
+        "I risikofylte eller skremmende situasjoner bruker jeg mentale teknikker for å kontrollere frykten",
         "Når jeg er fysisk utmattet og gruer meg til neste gjøremål, bruker jeg bevisste teknikker for å 'koble inn gassen' og iverksette handling",
         "Når jeg merker at jeg mister overblikket under press, tar jeg bevisste grep (f.eks. taktisk pust, ta et skritt tilbake) for å øke min egen kognitive kapasitet",
-        "Jeg finner ofte nye veier ut av fastlåste situasjoner ved å ta et skritt tilbake og redefinere situasjonen"
+        "Jeg finner ofte nye veier ut av fastlåste situasjoner ved å ta et skritt tilbake og redefinere situasjonen",
+        "Jeg har god selvkontroll"
     ];
 
     const questionsTable = document.getElementById('questionsTable');
