@@ -6,21 +6,24 @@ document.addEventListener("DOMContentLoaded", function() {
     const results = JSON.parse(localStorage.getItem('mscsResults'));
 
     if (results) {
+        // Spørsmål som skal snus (reverseres) før utregning
         const reversedQuestions = [1, 3, 5, 6, 10, 11, 12, 13, 14, 15];
         const reverseValue = value => 8 - value; // Reversering: 1=7, 2=6, 3=5, 4=4, 5=3, 6=2, 7=1
 
+        // Kategoriene fra MSCS-O
         const categories = {
-            Fravær_av_prokrastinering: [1, 2, 3, 4, 5],
-            Oppmerksomhetskontroll: [6, 7, 8, 9, 10],
-            Impulskontroll: [11, 12, 13, 14, 15],
-            Emosjonell_kontroll: [16, 17, 18, 19],
-            Målorientering: [20, 21, 22, 23],
-            Selvkontrollstrategier: [24, 25, 26, 27, 28, 29],
-            Inhibering: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-            Initiering: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
-            Selvkontroll: Array.from({ length: 29 }, (_, i) => i + 1),
+            "Fravær av prokrastinering": [1, 2, 3, 4, 5],
+            "Oppmerksomhetskontroll": [6, 7, 8, 9, 10],
+            "Impulskontroll": [11, 12, 13, 14, 15],
+            "Emosjonell kontroll": [16, 17, 18, 19],
+            "Målorientering": [20, 21, 22, 23],
+            "Selvkontroll strategier": [24, 25, 26, 27, 28, 29],
+            "Inhibering (Brems)": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            "Initiering (gass)": [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+            "Generell selvkontroll": Array.from({ length: 29 }, (_, i) => i + 1),
         };
 
+        // Funksjon for å regne ut gjennomsnitt
         const calculateAverage = (questions) => {
             const total = questions.reduce((sum, q) => {
                 const value = parseInt(results[`q${q}`], 10);
@@ -34,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
             categoryAverages[category] = calculateAverage(questions);
         }
 
+        // Vise resultatene som en liste
         const ul = document.createElement('ul');
         for (const [category, average] of Object.entries(categoryAverages)) {
             const li = document.createElement('li');
@@ -42,28 +46,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         resultsContainer.appendChild(ul);
 
-        // Define colors for the chart
+        // Definere farger for grafen
         const backgroundColors = Object.keys(categoryAverages).map(category => {
-            if (category === 'Inhibering' || category === 'Initiering') {
-                return 'rgba(54, 162, 235, 0.6)'; // Darker blue
-            } else if (category === 'Selvkontroll') {
-                return 'rgba(54, 162, 235, 0.8)'; // Even darker blue
+            if (category === 'Inhibering (Brems)' || category === 'Initiering (gass)') {
+                return 'rgba(54, 162, 235, 0.6)'; // Mørkeblå for hovedfaktorene
+            } else if (category === 'Generell selvkontroll') {
+                return 'rgba(54, 162, 235, 0.8)'; // Enda mørkere blå for totalkarakteren
             } else {
-                return 'rgba(75, 192, 192, 0.2)'; // Default color
+                return 'rgba(75, 192, 192, 0.2)'; // Standardfarge for underkategoriene
             }
         });
 
         const borderColors = Object.keys(categoryAverages).map(category => {
-            if (category === 'Inhibering' || category === 'Initiering') {
-                return 'rgba(54, 162, 235, 1)'; // Darker blue
-            } else if (category === 'Selvkontroll') {
-                return 'rgba(54, 162, 235, 1)'; // Even darker blue
+            if (category === 'Inhibering (Brems)' || category === 'Initiering (gass)') {
+                return 'rgba(54, 162, 235, 1)'; // Mørkeblå kant
+            } else if (category === 'Generell selvkontroll') {
+                return 'rgba(54, 162, 235, 1)'; // Enda mørkere blå kant
             } else {
-                return 'rgba(75, 192, 192, 1)'; // Default color
+                return 'rgba(75, 192, 192, 1)'; // Standard kantfarge
             }
         });
 
-        // Create the chart
+        // Opprette grafen med Chart.js
         new Chart(resultsChart, {
             type: 'bar',
             data: {
@@ -87,25 +91,25 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         // ==========================================
-        // NY KODE: Send data til Google Sheets Dashboard
+        // SEND DATA TIL GOOGLE SHEETS DASHBOARD
         // ==========================================
         
-        // Sjekk at vi ikke allerede har sendt denne dataen (hindrer dobbeltsending hvis de oppdaterer siden)
+        // Sjekk at vi ikke allerede har sendt denne dataen (hindrer dobbeltsending ved F5/oppdatering)
         if (!sessionStorage.getItem('dataSendt')) {
             
-            // Samle alle data i en pakke
+            // Samle alle data i en pakke (rådata + utregnede snitt)
             const uttrekk = {
                 DatoTid: new Date().toISOString(),
-                ...results, // Tar med q1 til q29
-                ...categoryAverages // Tar med de utregnede gjennomsnittene
+                ...results, 
+                ...categoryAverages 
             };
 
-            // BYTT UT DENNE URLEN MED DIN GOOGLE APPS SCRIPT URL I STEG 3
+            // Din Google Apps Script Webhook URL
             const googleAppScriptURL = "https://script.google.com/macros/s/AKfycbxAhzMzJ5Ej5NfBohu2nC5SQdYOdM0d0ZQIfv5NgoogAhPRdVCBQZxcu34GqtwJHLaYeQ/exec"; 
 
             fetch(googleAppScriptURL, {
                 method: 'POST',
-                mode: 'no-cors', // Viktig for statiske nettsider
+                mode: 'no-cors', 
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -113,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(() => {
                 console.log("Samband opprettet: Resultater sendt til dashboard!");
-                sessionStorage.setItem('dataSendt', 'true'); // Markerer som sendt
+                sessionStorage.setItem('dataSendt', 'true'); 
             })
             .catch((error) => {
                 console.error("Sambandsbrudd ved sending av data:", error);
@@ -121,6 +125,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     } else {
-        resultsContainer.textContent = 'No results found.';
+        resultsContainer.textContent = 'Ingen resultater funnet. Vennligst ta testen først.';
     }
 });
